@@ -1,57 +1,293 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>My Orders – Bahite's Bites</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
-        .orders-page { min-height: 100vh; padding: 110px 40px 60px; max-width: 860px; margin: 0 auto; }
-        .orders-header { text-align: center; margin-bottom: 40px; }
-        .orders-header h1 { color: orange; font-size: 36px; margin-bottom: 6px; }
-        .orders-header p { color: #ccc; font-size: 14px; }
-        .orders-loading { text-align: center; color: #aaa; padding: 80px 0; font-size: 16px; }
-        .orders-empty { text-align: center; padding: 80px 0; }
-        .orders-empty .empty-icon { font-size: 56px; margin-bottom: 16px; }
-        .orders-empty h3 { color: orange; font-size: 22px; margin-bottom: 10px; }
-        .orders-empty p { color: #aaa; margin-bottom: 24px; }
-        .orders-empty a { background: orange; color: #000; padding: 12px 28px; border-radius: 30px; text-decoration: none; font-weight: bold; display: inline-block; }
-        .order-card { background: #1e0000; border: 1px solid #3d0000; border-radius: 14px; margin-bottom: 20px; overflow: hidden; transition: border-color 0.2s; }
-        .order-card:hover { border-color: #ff8800; }
-        .order-card-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 22px; background: #280000; flex-wrap: wrap; gap: 10px; cursor: pointer; user-select: none; }
-        .order-card-header:hover { background: #320000; }
-        .order-id-date { display: flex; flex-direction: column; gap: 3px; }
-        .order-id { font-size: 14px; font-weight: bold; color: orange; }
-        .order-date { font-size: 12px; color: #aaa; }
-        .order-header-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-        .order-total-badge { font-size: 15px; font-weight: bold; color: white; }
-        .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
-        .status-topay { background: #4a3000; color: #ffaa00; }
-        .status-preparing { background: #1a3000; color: #88ff44; }
-        .status-completed { background: #003300; color: #44ff88; }
-        .status-cancelled { background: #3a0000; color: #ff6666; }
-        .toggle-icon { color: #aaa; font-size: 16px; transition: transform 0.25s; display: inline-block; }
-        .order-card.expanded .toggle-icon { transform: rotate(180deg); }
-        .order-card-body { display: none; padding: 20px 22px; border-top: 1px solid #3d0000; }
-        .order-card.expanded .order-card-body { display: block; }
-        .order-section-title { font-size: 11px; letter-spacing: 1.5px; color: #888; text-transform: uppercase; margin-bottom: 8px; margin-top: 16px; }
-        .order-section-title:first-child { margin-top: 0; }
-        .customer-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; }
-        .info-row { font-size: 13px; color: #aaa; }
-        .info-row span { color: white; font-weight: 500; }
-        .items-list { margin-top: 4px; }
-        .item-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #2a0000; font-size: 14px; color: #ddd; }
-        .item-row:last-child { border-bottom: none; }
-        .item-qty { color: #888; font-size: 12px; margin-left: 5px; }
-        .item-price { color: orange; font-weight: 600; }
-        .order-total-row { display: flex; justify-content: space-between; padding: 12px 0 0; margin-top: 8px; border-top: 2px solid #3d0000; }
-        .total-label { color: #ccc; font-size: 14px; font-weight: bold; }
-        .total-amount { color: orange; font-size: 18px; font-weight: bold; }
-        .not-logged-in { text-align: center; padding: 100px 40px; }
-        .not-logged-in h2 { color: orange; margin-bottom: 12px; font-size: 26px; }
-        .not-logged-in p { color: #aaa; margin-bottom: 24px; }
-        .not-logged-in a { background: orange; color: #000; padding: 12px 28px; border-radius: 30px; text-decoration: none; font-weight: bold; display: inline-block; }
-        .error-msg { background: #2a0000; border: 1px solid #5a0000; color: #ff8888; padding: 14px 18px; border-radius: 8px; text-align: center; margin: 20px 0; }
+        .orders-page {
+            min-height: 100vh;
+            padding: 110px 40px 60px;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .orders-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .orders-header h1 {
+            color: orange;
+            font-size: 36px;
+            margin-bottom: 6px;
+        }
+
+        .orders-header p {
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        .orders-loading {
+            text-align: center;
+            color: #aaa;
+            padding: 80px 0;
+            font-size: 16px;
+        }
+
+        .orders-empty {
+            text-align: center;
+            padding: 80px 0;
+        }
+
+        .orders-empty .empty-icon {
+            font-size: 56px;
+            margin-bottom: 16px;
+        }
+
+        .orders-empty h3 {
+            color: orange;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .orders-empty p {
+            color: #aaa;
+            margin-bottom: 24px;
+        }
+
+        .orders-empty a {
+            background: orange;
+            color: #000;
+            padding: 12px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .order-card {
+            background: #1e0000;
+            border: 1px solid #3d0000;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+
+        .order-card:hover {
+            border-color: #ff8800;
+        }
+
+        .order-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 22px;
+            background: #280000;
+            flex-wrap: wrap;
+            gap: 10px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .order-card-header:hover {
+            background: #320000;
+        }
+
+        .order-id-date {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .order-id {
+            font-size: 14px;
+            font-weight: bold;
+            color: orange;
+        }
+
+        .order-date {
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        .order-header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .order-total-badge {
+            font-size: 15px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-topay {
+            background: #4a3000;
+            color: #ffaa00;
+        }
+
+        .status-preparing {
+            background: #1a3000;
+            color: #88ff44;
+        }
+
+        .status-completed {
+            background: #003300;
+            color: #44ff88;
+        }
+
+        .status-cancelled {
+            background: #3a0000;
+            color: #ff6666;
+        }
+
+        .toggle-icon {
+            color: #aaa;
+            font-size: 16px;
+            transition: transform 0.25s;
+            display: inline-block;
+        }
+
+        .order-card.expanded .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .order-card-body {
+            display: none;
+            padding: 20px 22px;
+            border-top: 1px solid #3d0000;
+        }
+
+        .order-card.expanded .order-card-body {
+            display: block;
+        }
+
+        .order-section-title {
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            margin-top: 16px;
+        }
+
+        .order-section-title:first-child {
+            margin-top: 0;
+        }
+
+        .customer-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px 20px;
+        }
+
+        .info-row {
+            font-size: 13px;
+            color: #aaa;
+        }
+
+        .info-row span {
+            color: white;
+            font-weight: 500;
+        }
+
+        .items-list {
+            margin-top: 4px;
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #2a0000;
+            font-size: 14px;
+            color: #ddd;
+        }
+
+        .item-row:last-child {
+            border-bottom: none;
+        }
+
+        .item-qty {
+            color: #888;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+
+        .item-price {
+            color: orange;
+            font-weight: 600;
+        }
+
+        .order-total-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0 0;
+            margin-top: 8px;
+            border-top: 2px solid #3d0000;
+        }
+
+        .total-label {
+            color: #ccc;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .total-amount {
+            color: orange;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .not-logged-in {
+            text-align: center;
+            padding: 100px 40px;
+        }
+
+        .not-logged-in h2 {
+            color: orange;
+            margin-bottom: 12px;
+            font-size: 26px;
+        }
+
+        .not-logged-in p {
+            color: #aaa;
+            margin-bottom: 24px;
+        }
+
+        .not-logged-in a {
+            background: orange;
+            color: #000;
+            padding: 12px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .error-msg {
+            background: #2a0000;
+            border: 1px solid #5a0000;
+            color: #ff8888;
+            padding: 14px 18px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+        }
     </style>
 </head>
+
 <body>
     <header>
         <nav class="nav-bar">
@@ -226,4 +462,5 @@
         }
     </script>
 </body>
+
 </html>
