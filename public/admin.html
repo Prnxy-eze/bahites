@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard – Bahite's Bites</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .admin-page { min-height: 100vh; padding: 100px 40px 60px; max-width: 1100px; margin: 0 auto; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; flex-wrap: wrap; gap: 12px; }
+        .admin-header h1 { color: orange; font-size: 28px; }
+        .admin-user { color: #888; font-size: 13px; }
+        .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 36px; }
+        .stat-card { background: #1e0000; border: 1px solid #3d0000; border-radius: 12px; padding: 18px 20px; }
+        .stat-label { font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; color: #888; margin-bottom: 6px; }
+        .stat-value { font-size: 28px; font-weight: bold; color: orange; }
+        .stat-sub { font-size: 11px; color: #555; margin-top: 3px; }
+        .section-title { color: orange; font-size: 17px; font-weight: bold; margin-bottom: 14px; border-bottom: 1px solid #3d0000; padding-bottom: 8px; }
+        .top-items-list { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; }
+        .top-item-badge { background: #280000; border: 1px solid #5a0000; border-radius: 20px; padding: 6px 14px; font-size: 13px; color: #ddd; }
+        .top-item-badge strong { color: orange; }
+        .filter-row { display: flex; gap: 12px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; }
+        .filter-row label { color: #888; font-size: 13px; }
+        .filter-row select, .filter-row input { background: #1e0000; color: white; border: 1px solid #3d0000; border-radius: 8px; padding: 7px 12px; font-size: 13px; width: auto !important; margin: 0 !important; }
+        .filter-row select:focus, .filter-row input:focus { outline: none; border-color: orange; }
+        .orders-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .orders-table th { background: #280000; color: #999; text-align: left; padding: 10px 14px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
+        .orders-table td { padding: 11px 14px; border-bottom: 1px solid #220000; color: #ddd; vertical-align: top; }
+        .orders-table tbody tr:hover td { background: #1a0000; }
+        .cell-id { color: orange; font-weight: bold; font-size: 12px; }
+        .cell-date { color: #777; font-size: 11px; margin-top: 2px; }
+        .cust-name { color: white; font-weight: 600; }
+        .cust-detail { color: #777; font-size: 11px; margin-top: 1px; }
+        .items-cell { font-size: 12px; color: #bbb; line-height: 1.7; max-width: 200px; }
+        .cell-total { color: orange; font-weight: bold; white-space: nowrap; }
+        .cell-payment { color: #ccc; font-size: 12px; }
+        .status-select { background: #280000; color: white; border: 1px solid #5a0000; border-radius: 6px; padding: 5px 8px; font-size: 12px; cursor: pointer; width: auto !important; margin: 0 !important; }
+        .status-select:focus { outline: none; border-color: orange; }
+        .save-btn { background: #1a3300; color: #88ff44; border: 1px solid #336600; border-radius: 6px; padding: 4px 10px; font-size: 11px; cursor: pointer; margin-top: 5px; display: none; width: auto !important; }
+        .save-btn:hover { background: #2a5000 !important; color: white !important; }
+        .save-btn.saved { background: #003300 !important; color: #44ff88 !important; border-color: #006600 !important; }
+        .empty-row td { text-align: center; color: #555; padding: 40px !important; }
+        .admin-loading { text-align: center; color: #aaa; padding: 80px 0; font-size: 16px; }
+        .admin-error { background: #2a0000; border: 1px solid #5a0000; color: #ff8888; padding: 14px 18px; border-radius: 8px; margin-bottom: 20px; display: none; }
+        .not-logged { text-align: center; padding: 120px 40px; }
+        .not-logged h2 { color: orange; margin-bottom: 12px; }
+        .not-logged p { color: #aaa; margin-bottom: 20px; }
+        .not-logged a { background: orange; color: #000; padding: 12px 28px; border-radius: 30px; text-decoration: none; font-weight: bold; display: inline-block; }
+        .refresh-btn { background: #2a1500; color: orange; border: 1px solid #5a3000; border-radius: 8px; padding: 7px 16px; font-size: 13px; cursor: pointer; width: auto !important; }
+        .refresh-btn:hover { background: #3a2000 !important; color: white !important; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="nav-bar">
+            <div class="logo"><img src="src/images/Bahite's-Bites logo.jpg" height="50"></div>
+            <ul class="nav-links">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="orders.html">My Orders</a></li>
+            </ul>
+            <div class="nav-right">
+                <div class="account-area" id="account-area">
+                    <a href="login.html" id="login-btn">Sign up / Log in</a>
+                    <div id="account-profile" class="hidden">
+                        <div class="profile-circle">
+                            <span class="profile-initial" id="profile-name">U</span>
+                        </div>
+                        <div class="account-dropdown">
+                            <span class="dropdown-name" id="profile-name-label"></span>
+                            <a href="orders.html">My Orders</a>
+                            <a href="#" class="logout-link" onclick="logout(); return false;">Log out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="admin-page">
+        <div class="admin-loading" id="loading-state">⏳ Loading dashboard...</div>
+        <div id="not-logged" class="not-logged" style="display:none;">
+            <h2>🔒 Access Denied</h2>
+            <p>You must be logged in to view the admin dashboard.</p>
+            <a href="login.html">Log In</a>
+        </div>
+        <div id="admin-dashboard" style="display:none;">
+            <div class="admin-header">
+                <h1>⚙️ Admin Dashboard</h1>
+                <div style="display:flex;gap:12px;align-items:center;">
+                    <span class="admin-user" id="admin-user"></span>
+                    <button class="refresh-btn" onclick="loadAllOrders()">↻ Refresh</button>
+                </div>
+            </div>
+
+            <div class="admin-error" id="admin-error"></div>
+
+            <div class="stats-row">
+                <div class="stat-card"><div class="stat-label">Total Orders</div><div class="stat-value" id="s-total">—</div></div>
+                <div class="stat-card"><div class="stat-label">Total Revenue</div><div class="stat-value" id="s-revenue">—</div><div class="stat-sub">completed only</div></div>
+                <div class="stat-card"><div class="stat-label">To Pay</div><div class="stat-value" id="s-topay">—</div></div>
+                <div class="stat-card"><div class="stat-label">Preparing</div><div class="stat-value" id="s-preparing">—</div></div>
+                <div class="stat-card"><div class="stat-label">Completed</div><div class="stat-value" id="s-completed">—</div></div>
+                <div class="stat-card"><div class="stat-label">Cancelled</div><div class="stat-value" id="s-cancelled">—</div></div>
+            </div>
+
+            <div class="section-title">🔥 Top Selling Items</div>
+            <div class="top-items-list" id="top-items"><span style="color:#555">No data yet</span></div>
+
+            <div class="section-title" style="margin-top:8px;">📦 All Orders</div>
+            <div class="filter-row">
+                <label>Status:</label>
+                <select id="filter-status" onchange="filterOrders()">
+                    <option value="">All</option>
+                    <option value="To Pay">To Pay</option>
+                    <option value="Preparing">Preparing</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+                <label>Search:</label>
+                <input type="text" id="filter-search" placeholder="Name or Order ID…" oninput="filterOrders()">
+            </div>
+
+            <div style="overflow-x:auto;">
+                <table class="orders-table">
+                    <thead><tr>
+                        <th>Order</th>
+                        <th>Customer</th>
+                        <th>Items</th>
+                        <th>Total</th>
+                        <th>Payment</th>
+                        <th>Status</th>
+                    </tr></thead>
+                    <tbody id="orders-tbody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/fade.js"></script>
+    <script type="module">
+        import { auth, onAuthStateChanged, signOut } from "./js/firebase.js";
+
+        window.logout = async () => { await signOut(auth); window.location.href = "home.html"; };
+
+        let allOrders = [];
+
+        onAuthStateChanged(auth, async (user) => {
+            document.getElementById("loading-state").style.display = "none";
+
+            // Update nav
+            const loginBtn = document.getElementById("login-btn");
+            const accountProfile = document.getElementById("account-profile");
+            if (user) {
+                if (loginBtn) loginBtn.style.display = "none";
+                if (accountProfile) accountProfile.classList.remove("hidden");
+                const name = user.displayName || user.email.split("@")[0];
+                const el = document.getElementById("profile-name");
+                const lbl = document.getElementById("profile-name-label");
+                if (el) el.textContent = name.charAt(0).toUpperCase();
+                if (lbl) lbl.textContent = name;
+                document.getElementById("admin-user").textContent = user.email;
+            } else {
+                if (loginBtn) loginBtn.style.display = "";
+                if (accountProfile) accountProfile.classList.add("hidden");
+            }
+
+            if (!user) {
+                document.getElementById("not-logged").style.display = "block";
+                return;
+            }
+
+            document.getElementById("admin-dashboard").style.display = "block";
+            await loadAllOrders();
+        });
+
+        window.loadAllOrders = async function() {
+            const errEl = document.getElementById("admin-error");
+            errEl.style.display = "none";
+            try {
+                const res = await fetch("/api/get-all-orders");
+                const data = await res.json();
+                if (!res.ok || data.error) throw new Error(data.error || "Failed to load");
+                allOrders = data.orders || [];
+                updateStats();
+                updateTopItems();
+                renderOrders(allOrders);
+            } catch(err) {
+                console.error(err);
+                errEl.style.display = "block";
+                errEl.textContent = "⚠️ " + err.message;
+            }
+        };
+
+        function updateStats() {
+            let revenue = 0, topay = 0, preparing = 0, completed = 0, cancelled = 0;
+            allOrders.forEach(o => {
+                const s = (o.status || "").toLowerCase();
+                if (s === "completed") { revenue += parseFloat(o.total || 0); completed++; }
+                else if (s === "to pay") topay++;
+                else if (s === "preparing") preparing++;
+                else if (s === "cancelled") cancelled++;
+            });
+            document.getElementById("s-total").textContent = allOrders.length;
+            document.getElementById("s-revenue").textContent = "₱" + revenue.toFixed(2);
+            document.getElementById("s-topay").textContent = topay;
+            document.getElementById("s-preparing").textContent = preparing;
+            document.getElementById("s-completed").textContent = completed;
+            document.getElementById("s-cancelled").textContent = cancelled;
+        }
+
+        function updateTopItems() {
+            const counts = {};
+            allOrders.forEach(o => {
+                const items = typeof o.items === "string" ? JSON.parse(o.items) : (o.items || []);
+                items.forEach(item => { counts[item.name] = (counts[item.name] || 0) + 1; });
+            });
+            const sorted = Object.entries(counts).sort((a,b) => b[1]-a[1]).slice(0, 6);
+            const el = document.getElementById("top-items");
+            if (!sorted.length) { el.innerHTML = '<span style="color:#555">No data yet</span>'; return; }
+            const medals = ["🥇","🥈","🥉"];
+            el.innerHTML = sorted.map(([name, cnt], i) =>
+                `<div class="top-item-badge">${medals[i] || "•"} ${name} <strong>×${cnt}</strong></div>`
+            ).join("");
+        }
+
+        function renderOrders(orders) {
+            const tbody = document.getElementById("orders-tbody");
+            if (!orders.length) {
+                tbody.innerHTML = '<tr class="empty-row"><td colspan="6">No orders found</td></tr>';
+                return;
+            }
+            tbody.innerHTML = orders.map(o => {
+                const items = typeof o.items === "string" ? JSON.parse(o.items) : (o.items || []);
+                const grouped = {};
+                items.forEach(item => { if (!grouped[item.name]) grouped[item.name] = 0; grouped[item.name]++; });
+                const itemsText = Object.entries(grouped).map(([n,q]) => `${n} ×${q}`).join("<br>");
+                const oid = o.order_id || "";
+                return `<tr>
+                    <td><div class="cell-id">${oid}</div><div class="cell-date">${o.date || "—"}</div></td>
+                    <td><div class="cust-name">${o.name || "—"}</div><div class="cust-detail">${o.contact || ""}</div><div class="cust-detail">${o.address || ""}</div></td>
+                    <td class="items-cell">${itemsText || "—"}</td>
+                    <td class="cell-total">₱${parseFloat(o.total||0).toFixed(2)}</td>
+                    <td class="cell-payment">${o.payment || "—"}</td>
+                    <td>
+                        <select class="status-select" id="sel-${oid}" onchange="markDirty('${oid}')">
+                            <option ${o.status==="To Pay"?"selected":""}>To Pay</option>
+                            <option ${o.status==="Preparing"?"selected":""}>Preparing</option>
+                            <option ${o.status==="Completed"?"selected":""}>Completed</option>
+                            <option ${o.status==="Cancelled"?"selected":""}>Cancelled</option>
+                        </select>
+                        <br>
+                        <button class="save-btn" id="btn-${oid}" onclick="saveStatus('${oid}')">Save</button>
+                    </td>
+                </tr>`;
+            }).join("");
+        }
+
+        window.markDirty = function(oid) {
+            const btn = document.getElementById("btn-"+oid);
+            if (btn) { btn.style.display = "inline-block"; btn.textContent = "Save"; btn.classList.remove("saved"); btn.disabled = false; }
+        };
+
+        window.saveStatus = async function(oid) {
+            const sel = document.getElementById("sel-"+oid);
+            const btn = document.getElementById("btn-"+oid);
+            const newStatus = sel.value;
+            btn.textContent = "…"; btn.disabled = true;
+            try {
+                const res = await fetch("/api/update-status", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ orderID: oid, status: newStatus })
+                });
+                const data = await res.json();
+                if (!data.success) throw new Error(data.error);
+                const o = allOrders.find(x => x.order_id === oid);
+                if (o) o.status = newStatus;
+                updateStats();
+                btn.textContent = "✓ Saved"; btn.classList.add("saved");
+                setTimeout(() => { btn.style.display = "none"; btn.disabled = false; }, 1500);
+            } catch(err) {
+                btn.textContent = "Error"; btn.disabled = false;
+                console.error(err);
+            }
+        };
+
+        window.filterOrders = function() {
+            const sf = document.getElementById("filter-status").value;
+            const tf = document.getElementById("filter-search").value.toLowerCase();
+            renderOrders(allOrders.filter(o => {
+                const ms = !sf || o.status === sf;
+                const mt = !tf || (o.order_id||"").toLowerCase().includes(tf) || (o.name||"").toLowerCase().includes(tf) || (o.contact||"").toLowerCase().includes(tf);
+                return ms && mt;
+            }));
+        };
+    </script>
+</body>
+</html>

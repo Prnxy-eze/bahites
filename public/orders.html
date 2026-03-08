@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Orders – Bahite's Bites</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .orders-page { min-height: 100vh; padding: 110px 40px 60px; max-width: 860px; margin: 0 auto; }
+        .orders-header { text-align: center; margin-bottom: 40px; }
+        .orders-header h1 { color: orange; font-size: 36px; margin-bottom: 6px; }
+        .orders-header p { color: #ccc; font-size: 14px; }
+        .orders-loading { text-align: center; color: #aaa; padding: 80px 0; font-size: 16px; }
+        .orders-empty { text-align: center; padding: 80px 0; }
+        .orders-empty .empty-icon { font-size: 56px; margin-bottom: 16px; }
+        .orders-empty h3 { color: orange; font-size: 22px; margin-bottom: 10px; }
+        .orders-empty p { color: #aaa; margin-bottom: 24px; }
+        .orders-empty a { background: orange; color: #000; padding: 12px 28px; border-radius: 30px; text-decoration: none; font-weight: bold; display: inline-block; }
+        .order-card { background: #1e0000; border: 1px solid #3d0000; border-radius: 14px; margin-bottom: 20px; overflow: hidden; transition: border-color 0.2s; }
+        .order-card:hover { border-color: #ff8800; }
+        .order-card-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 22px; background: #280000; flex-wrap: wrap; gap: 10px; cursor: pointer; user-select: none; }
+        .order-card-header:hover { background: #320000; }
+        .order-id-date { display: flex; flex-direction: column; gap: 3px; }
+        .order-id { font-size: 14px; font-weight: bold; color: orange; }
+        .order-date { font-size: 12px; color: #aaa; }
+        .order-header-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .order-total-badge { font-size: 15px; font-weight: bold; color: white; }
+        .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+        .status-topay { background: #4a3000; color: #ffaa00; }
+        .status-preparing { background: #1a3000; color: #88ff44; }
+        .status-completed { background: #003300; color: #44ff88; }
+        .status-cancelled { background: #3a0000; color: #ff6666; }
+        .toggle-icon { color: #aaa; font-size: 16px; transition: transform 0.25s; display: inline-block; }
+        .order-card.expanded .toggle-icon { transform: rotate(180deg); }
+        .order-card-body { display: none; padding: 20px 22px; border-top: 1px solid #3d0000; }
+        .order-card.expanded .order-card-body { display: block; }
+        .order-section-title { font-size: 11px; letter-spacing: 1.5px; color: #888; text-transform: uppercase; margin-bottom: 8px; margin-top: 16px; }
+        .order-section-title:first-child { margin-top: 0; }
+        .customer-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; }
+        .info-row { font-size: 13px; color: #aaa; }
+        .info-row span { color: white; font-weight: 500; }
+        .items-list { margin-top: 4px; }
+        .item-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #2a0000; font-size: 14px; color: #ddd; }
+        .item-row:last-child { border-bottom: none; }
+        .item-qty { color: #888; font-size: 12px; margin-left: 5px; }
+        .item-price { color: orange; font-weight: 600; }
+        .order-total-row { display: flex; justify-content: space-between; padding: 12px 0 0; margin-top: 8px; border-top: 2px solid #3d0000; }
+        .total-label { color: #ccc; font-size: 14px; font-weight: bold; }
+        .total-amount { color: orange; font-size: 18px; font-weight: bold; }
+        .not-logged-in { text-align: center; padding: 100px 40px; }
+        .not-logged-in h2 { color: orange; margin-bottom: 12px; font-size: 26px; }
+        .not-logged-in p { color: #aaa; margin-bottom: 24px; }
+        .not-logged-in a { background: orange; color: #000; padding: 12px 28px; border-radius: 30px; text-decoration: none; font-weight: bold; display: inline-block; }
+        .error-msg { background: #2a0000; border: 1px solid #5a0000; color: #ff8888; padding: 14px 18px; border-radius: 8px; text-align: center; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="nav-bar">
+            <div class="logo"><img src="src/images/Bahite's-Bites logo.jpg" height="50"></div>
+            <ul class="nav-links">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="orders.html" style="color:orange;">My Orders</a></li>
+            </ul>
+            <div class="nav-right">
+                <div class="account-area" id="account-area">
+                    <a href="login.html" id="login-btn">Sign up / Log in</a>
+                    <div id="account-profile" class="hidden">
+                        <div class="profile-circle">
+                            <span class="profile-initial" id="profile-name">U</span>
+                        </div>
+                        <div class="account-dropdown">
+                            <span class="dropdown-name" id="profile-name-label"></span>
+                            <a href="orders.html">My Orders</a>
+                            <a href="#" class="logout-link" onclick="logout(); return false;">Log out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="orders-page">
+        <div class="orders-loading" id="loading-state">⏳ Loading your orders...</div>
+        <div id="logged-out-state" class="not-logged-in" style="display:none;">
+            <div style="font-size:56px;margin-bottom:16px;">🔒</div>
+            <h2>Please log in first</h2>
+            <p>You need to be logged in to view your order history.</p>
+            <a href="login.html">Log In</a>
+        </div>
+        <div id="orders-content" style="display:none;">
+            <div class="orders-header">
+                <h1>📋 My Orders</h1>
+                <p id="orders-subtitle"></p>
+            </div>
+            <div id="orders-error" class="error-msg" style="display:none;"></div>
+            <div id="orders-empty" class="orders-empty" style="display:none;">
+                <div class="empty-icon">🛍️</div>
+                <h3>No orders yet</h3>
+                <p>You haven't placed any orders yet.</p>
+                <a href="menu.html">Browse Menu</a>
+            </div>
+            <div id="orders-list"></div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/fade.js"></script>
+    <script type="module">
+        import { auth, onAuthStateChanged, signOut } from "./js/firebase.js";
+
+        window.logout = async () => { await signOut(auth); window.location.href = "home.html"; };
+
+        onAuthStateChanged(auth, async (user) => {
+            document.getElementById("loading-state").style.display = "none";
+
+            // Update nav
+            const loginBtn = document.getElementById("login-btn");
+            const accountProfile = document.getElementById("account-profile");
+            if (user) {
+                if (loginBtn) loginBtn.style.display = "none";
+                if (accountProfile) accountProfile.classList.remove("hidden");
+                const name = user.displayName || user.email.split("@")[0];
+                const el = document.getElementById("profile-name");
+                const lbl = document.getElementById("profile-name-label");
+                if (el) el.textContent = name.charAt(0).toUpperCase();
+                if (lbl) lbl.textContent = name;
+            } else {
+                if (loginBtn) loginBtn.style.display = "";
+                if (accountProfile) accountProfile.classList.add("hidden");
+            }
+
+            if (!user) {
+                document.getElementById("logged-out-state").style.display = "block";
+                return;
+            }
+
+            document.getElementById("orders-content").style.display = "block";
+            const subtitle = document.getElementById("orders-subtitle");
+
+            try {
+                const res = await fetch("/api/get-orders?userID=" + encodeURIComponent(user.uid));
+                const data = await res.json();
+
+                if (!res.ok || data.error) throw new Error(data.error || "Failed to load orders");
+
+                const orders = data.orders || [];
+                subtitle.textContent = orders.length === 0
+                    ? "You haven't placed any orders yet."
+                    : orders.length + " order" + (orders.length !== 1 ? "s" : "") + " placed";
+
+                if (orders.length === 0) {
+                    document.getElementById("orders-empty").style.display = "block";
+                    return;
+                }
+
+                const list = document.getElementById("orders-list");
+                list.innerHTML = "";
+
+                orders.forEach((row, index) => {
+                    const items = typeof row.items === "string" ? JSON.parse(row.items) : (row.items || []);
+
+                    // Group items
+                    const grouped = {};
+                    items.forEach(item => {
+                        if (!grouped[item.name]) grouped[item.name] = { name: item.name, price: item.price, qty: 0 };
+                        grouped[item.name].qty++;
+                    });
+
+                    let itemsHTML = Object.values(grouped).map(item =>
+                        `<div class="item-row">
+                            <span>${item.name} <span class="item-qty">× ${item.qty}</span></span>
+                            <span class="item-price">₱${(item.price * item.qty).toFixed(2)}</span>
+                        </div>`
+                    ).join("");
+
+                    const statusClass = getStatusClass(row.status);
+                    const card = document.createElement("div");
+                    card.className = "order-card" + (index === 0 ? " expanded" : "");
+                    card.innerHTML = `
+                        <div class="order-card-header" onclick="this.parentElement.classList.toggle('expanded')">
+                            <div class="order-id-date">
+                                <span class="order-id">${row.order_id || "—"}</span>
+                                <span class="order-date">${row.date || "—"}</span>
+                            </div>
+                            <div class="order-header-right">
+                                <span class="order-total-badge">₱${parseFloat(row.total || 0).toFixed(2)}</span>
+                                <span class="status-badge ${statusClass}">${row.status || "To Pay"}</span>
+                                <span class="toggle-icon">▾</span>
+                            </div>
+                        </div>
+                        <div class="order-card-body">
+                            <p class="order-section-title">Customer Info</p>
+                            <div class="customer-info-grid">
+                                <div class="info-row">Name: <span>${row.name || "—"}</span></div>
+                                <div class="info-row">Contact: <span>${row.contact || "—"}</span></div>
+                                <div class="info-row">Payment: <span>${row.payment || "—"}</span></div>
+                                <div class="info-row">Address: <span>${row.address || "—"}</span></div>
+                            </div>
+                            <p class="order-section-title" style="margin-top:18px;">Items Ordered</p>
+                            <div class="items-list">${itemsHTML}</div>
+                            <div class="order-total-row">
+                                <span class="total-label">Total</span>
+                                <span class="total-amount">₱${parseFloat(row.total || 0).toFixed(2)}</span>
+                            </div>
+                        </div>`;
+                    list.appendChild(card);
+                });
+
+            } catch (err) {
+                console.error(err);
+                const errEl = document.getElementById("orders-error");
+                errEl.style.display = "block";
+                errEl.textContent = "⚠️ " + err.message;
+            }
+        });
+
+        function getStatusClass(status) {
+            const s = (status || "").toLowerCase().replace(/\s/g, "");
+            if (s === "topay") return "status-topay";
+            if (s === "preparing") return "status-preparing";
+            if (s === "completed") return "status-completed";
+            if (s === "cancelled") return "status-cancelled";
+            return "status-topay";
+        }
+    </script>
+</body>
+</html>

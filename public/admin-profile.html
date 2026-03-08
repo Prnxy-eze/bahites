@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Admin Profile</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body onload="loadProfile()">
+
+    <nav class="nav-bar">
+        <ul class="nav-links">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="menu.html">Menu</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+            <li><a href="#" onclick="logout()">Logout</a></li>
+        </ul>
+    </nav>
+
+    <h2>Admin Profile</h2>
+
+    <input id="name">
+    <input id="email" disabled>
+    <input id="phone">
+    <input id="password" type="password" placeholder="New Password">
+    <button onclick="updateProfile()">Update</button>
+
+    <script src="js/admin-profile.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/fade.js"></script>
+
+    <script type="module" src="js/orders.js"></script>
+    <script type="module" src="js/auth.js"></script>
+</body>
+
+</html>

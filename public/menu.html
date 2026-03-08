@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Menu</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <header>
+    <nav class="nav-bar">
+
+      <div class="logo">
+        <img src="src/images/Bahite's-Bites logo.jpg" height="50">
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="home.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="orders.html">My Order</a></li>
+      </ul>
+
+      <div class="nav-right">
+
+        <div class="account-area" id="account-area">
+          <a href="login.html" id="login-btn">Sign up / Log in</a>
+
+          <div id="account-profile" class="hidden">
+            <div class="profile-circle">
+              <span class="profile-initial" id="profile-name">U</span>
+            </div>
+            <div class="account-dropdown">
+              <span class="dropdown-name" id="profile-name-label"></span>
+              <a href="admin.html">Admin</a>
+              <a href="#" class="logout-link" onclick="logout(); return false;">Log out</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </nav>
+  </header>
+
+  <!-- Floating Cart Button -->
+  <button class="floating-cart-btn" onclick="toggleCart()">
+    🛒 <span id="cart-count">0</span>
+  </button>
+
+  <div id="cart-panel">
+
+    <h2>Your Cart</h2>
+
+    <ul id="cart-items"></ul>
+
+    <p>Total: ₱<span id="cart-total">0</span></p>
+
+    <h3>Checkout</h3>
+
+    <form id="checkout-form">
+
+      <input id="cust-name" placeholder="Name" required>
+      <input id="cust-phone" placeholder="Phone" required>
+      <textarea id="cust-address" placeholder="Address" required></textarea>
+
+      <select id="payment-method">
+        <option value="Cash">Cash</option>
+        <option value="GCash">GCash</option>
+      </select>
+
+      <button type="submit" class="checkout-btn">Checkout</button>
+
+    </form>
+
+    <p id="checkout-message"></p>
+  </div>
+
+  <div id="order-modal" class="modal">
+    <div class="modal-content">
+      <h2 class="modal-title">Order Summary</h2>
+      <ul id="summary-items" class="summary-list"></ul>
+      <div class="modal-divider"></div>
+      <p class="modal-total">Total: ₱<span id="summary-total"></span></p>
+      <div class="modal-buttons">
+        <button id="confirm-order" class="confirm-btn">Confirm Order</button>
+        <button id="cancel-order" class="cancel-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="receipt-modal" class="modal">
+    <div class="receipt-box">
+      <h2 class="receipt-title">Bahite's-Bites</h2>
+      <p class="receipt-subtitle">Order Receipt</p>
+      <ul id="receipt-items" class="receipt-list"></ul>
+      <div class="receipt-divider"></div>
+      <p class="receipt-total-line">Total: ₱<span id="receipt-total"></span></p>
+      <p class="receipt-payment-line">Payment: <span id="receipt-payment"></span></p>
+      <p class="receipt-thanks">Thank you for your order! 🩷</p>
+      <button id="close-receipt" class="close-receipt-btn">Close</button>
+    </div>
+  </div>
+
+  <section id="best-seller">
+    <h2>Best Sellers</h2>
+    <div class="menu best-menu">
+      <div class="card">
+        <img src="src/images/classic burger.jpg" alt="Classic Burger">
+        <h3>Classic Burger</h3>
+        <p class="price">₱35</p>
+        <button class="add-btn" data-name="Classic Burger" data-price="35">Add to Cart</button>
+      </div>
+
+      <div class="card">
+        <img src="src/images/fried chicken.jpg" alt="Fried Chicken">
+        <h3>Fried Chicken</h3>
+        <p class="price">₱55</p>
+        <button class="add-btn" data-name="Fried Chicken" data-price="55">Add to Cart</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="menu">
+    <h2>Our Menu</h2>
+    <div class="menu container">
+
+      <div class="card">
+        <img src="src/images/classic burger.jpg" alt="Classic Burger">
+        <h3>Classic Burger</h3>
+        <p class="price">₱35</p>
+        <button class="add-btn" data-name="Classic Burger" data-price="35">Add to Cart</button>
+      </div>
+
+      <div class="card">
+        <img src="src/images/fried chicken.jpg" alt="Fried Chicken">
+        <h3>Fried Chicken</h3>
+        <p class="price">₱55</p>
+        <button class="add-btn" data-name="Fried Chicken" data-price="55">Add to Cart</button>
+      </div>
+
+      <div class="card">
+        <img src="src/images/cheese fries.jpg" alt="Cheese Fries">
+        <h3>Cheese Fries</h3>
+        <p class="price">₱30</p>
+        <button class="add-btn" data-name="Cheese Fries" data-price="30">Add to Cart</button>
+      </div>
+
+      <div class="card">
+        <img src="src/images/burger fries combo.jpg" alt="Burger & Fries Combo">
+        <h3>Burger & Fries Combo</h3>
+        <p class="price">₱55</p>
+        <button class="add-btn" data-name="Burger & Fries Combo" data-price="55">Add to Cart</button>
+      </div>
+
+      <div class="card">
+        <img src="src/images/spag chicken combo.jpg" alt="Chicken & Spag with Coke Combo">
+        <h3>Chicken & Spag with Coke Combo</h3>
+        <p class="price">₱55</p>
+        <button class="add-btn" data-name="Chicken & Spag with Coke Combo" data-price="55">Add to Cart</button>
+      </div>
+
+      <div class="card">
+        <img src="src/images/spag chicken pine combo.jpg" alt="Chicken & Spag with Pine Combo">
+        <h3>Chicken & Spag with Pine Combo</h3>
+        <p class="price">₱55</p>
+        <button class="add-btn" data-name="Chicken & Spag with Pine Combo" data-price="55">Add to Cart</button>
+      </div>
+
+      <div class="card">
+        <img src="src/images/burger fries coke combo.jpg" alt="Burger & Fries with Coke Combo">
+        <h3>Burger & Fries with Coke Combo</h3>
+        <p class="price">₱55</p>
+        <button class="add-btn" data-name="Burger & Fries with Coke Combo" data-price="55">Add to Cart</button>
+      </div>
+
+      <div class="card">
+        <img src="src/images/chicken sandwich.jpg" alt="Chicken Sandwich & Coke Combo">
+        <h3>Chicken Sandwich & Coke Combo</h3>
+        <p class="price">₱55</p>
+        <button class="add-btn" data-name="Chicken Sandwich & Coke Combo" data-price="55">Add to Cart</button>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/script.js"></script>
+  <script src="js/fade.js"></script>
+  <script type="module" src="js/orders.js"></script>
+  <script type="module" src="js/auth.js"></script>
+</body>
+
+</html>

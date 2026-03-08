@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>About</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <header>
+    <nav class="nav-bar">
+
+      <div class="logo">
+        <img src="src/images/Bahite's-Bites logo.jpg" height="50">
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="home.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="orders.html">My Order</a></li>
+      </ul>
+
+      <div class="nav-right">
+
+        <div class="account-area" id="account-area">
+          <a href="login.html" id="login-btn">Sign up / Log in</a>
+
+          <div id="account-profile" class="hidden">
+            <div class="profile-circle">
+              <span class="profile-initial" id="profile-name">U</span>
+            </div>
+            <div class="account-dropdown">
+              <span class="dropdown-name" id="profile-name-label"></span>
+              <a href="admin.html">Admin</a>
+              <a href="#" class="logout-link" onclick="logout(); return false;">Log out</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </nav>
+  </header>
+
+  <section class="about-container">
+    <div class="about-image">
+
+    </div>
+
+    <div class="about-text">
+      <h1>About Bahite's Bites</h1>
+      <p>
+        At Bahite’s-Bites, we are committed to serving high-quality food that combines authentic flavors with a modern
+        touch.
+        Since opening our doors, our mission has been to provide every guest with a memorable dining experience, whether
+        they
+        are joining us in person or ordering from the comfort of their home. We take pride in using fresh ingredients,
+        carefully crafted recipes, and excellent customer service to ensure satisfaction in every bite.
+      </p>
+
+      <p>
+        Our restaurant is more than just a place to eat, it’s a space where family, friends, and communities come
+        together
+        to share good food and create lasting memories.
+      </p>
+
+      <h2>Our Mission</h2>
+      <p>Deliver amazing food and service every day.</p>
+
+      <h2>Our Vision</h2>
+      <p>Become a trusted local food brand.</p>
+    </div>
+  </section>
+
+  <section class="team-section">
+    <section id="about-hud">
+      <h2>About Us</h2>
+
+      <div class="menu about-grid">
+        <div class="card">
+          <img src="src/images/jhustine.jpg" alt="Jhustine">
+          <h3>Jhustine</h3>
+          <p class="desc">He focuses on HTML and CSS. He creates the structure and design of our website and also
+            checks if it is well-structured, looks good, works on different devices and sees if anything needs to be
+            changed.</p>
+        </div>
+        <div class="card">
+          <img src="IMAGE_URL">
+          <h3>Prince Ezechiel</h3>
+          <p class="desc"> Prince on the other hand, focuses solely on JavaScript. He is the one who adds interactivity
+            and functions to the website such as buttons, forms,
+            and other dynamic features to make the website look neat and beautiful.</p>
+        </div>
+        <div class="card">
+          <img src="src/images/gantalao.jpg" alt="Lester Jane">
+          <h3>Lester Jane</h3>
+          <p class="desc"> Lester's part is UI (User Interface). She helps design the layout and visual
+            parts of the website to make it clear, organized, and visually appealing.</p>
+        </div>
+        <div class="card">
+          <img src="src/images/baluyot.jpg" alt="Maika">
+          <h3>Maika</h3>
+          <p class="desc">Maika, on the other hand, is also part of the UI (User Interface). She is also involved in
+            designing the visual elements of the
+            website and suggests things that need to be changed or added to the website.</p>
+        </div>
+        <div class="card">
+          <img src="src/images/magbanua.jpg" alt="Princes Mae">
+          <h3>Princes Mae</h3>
+          <p class="desc"> She is also focused on UX (User Experience). She helps study how
+            people actually use websites to improve the user experience.</p>
+        </div>
+        <div class="card">
+          <img src="src/images/rivera.jpg" alt="Mary Rose">
+          <h3>Mary Rose</h3>
+          <p class="desc">She focuses solely on UX (User Experience). She ensures that our
+            website is easy to use, and provides a smooth experience for users.</p>
+        </div>
+      </div>
+    </section>
+
+    <script src="js/script.js"></script>
+    <script src="js/fade.js"></script>
+
+    <script type="module" src="js/orders.js"></script>
+    <script type="module" src="js/auth.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Log In – Bahite's Bites</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .login-body {
+            background: #0e0000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .login-bg-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(200, 60, 0, 0.18) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .login-card {
+            position: relative;
+            z-index: 1;
+            background: #1a0000;
+            border: 1px solid #3d0000;
+            border-radius: 20px;
+            padding: 44px 40px;
+            width: 420px;
+            max-width: 92vw;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,100,0,0.08);
+        }
+
+        .login-logo-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+
+        .login-logo-wrap img {
+            width: 72px;
+            height: 72px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid orange;
+            margin-bottom: 12px;
+        }
+
+        .login-brand {
+            font-family: 'Playfair Display', serif;
+            color: orange;
+            font-size: 22px;
+            letter-spacing: 0.5px;
+        }
+
+        .login-title {
+            text-align: center;
+            color: white;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .login-subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 30px;
+        }
+
+        .login-field {
+            margin-bottom: 16px;
+        }
+
+        .login-field label {
+            display: block;
+            color: #ccc;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 7px;
+        }
+
+        .login-field input {
+            width: 100%;
+            padding: 13px 18px;
+            border-radius: 10px;
+            border: 1px solid #3d0000;
+            background: #110000;
+            color: white;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .login-field input:focus {
+            outline: none;
+            border-color: orange;
+            box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.12);
+        }
+
+        .login-field input::placeholder {
+            color: #555;
+        }
+
+        .login-submit {
+            width: 100%;
+            padding: 14px;
+            margin-top: 8px;
+            border-radius: 10px;
+            border: none;
+            background: orange;
+            color: #000;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            letter-spacing: 0.5px;
+        }
+
+        .login-submit:hover {
+            background: #e67300;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .login-submit:active {
+            transform: translateY(0);
+        }
+
+        .login-error {
+            background: rgba(200, 0, 0, 0.15);
+            border: 1px solid #800000;
+            color: #ff8888;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 16px;
+            display: none;
+            text-align: center;
+        }
+
+        .login-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 22px 0;
+        }
+
+        .login-divider span {
+            flex: 1;
+            height: 1px;
+            background: #2a0000;
+        }
+
+        .login-divider p {
+            color: #555;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .login-signup-row {
+            text-align: center;
+            font-size: 14px;
+            color: #888;
+        }
+
+        .login-signup-row a {
+            color: orange;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-signup-row a:hover {
+            text-decoration: underline;
+        }
+
+        .login-back {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #aaa;
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.2s;
+        }
+
+        .login-back:hover {
+            color: orange;
+        }
+    </style>
+</head>
+
+<body class="login-body">
+    <div class="login-bg-glow"></div>
+
+    <a href="home.html" class="login-back">← Back to Home</a>
+
+    <div class="login-card">
+        <div class="login-logo-wrap">
+            <img src="src/images/Bahite's-Bites logo.jpg" alt="Logo">
+            <span class="login-brand">Bahite's Bites</span>
+        </div>
+
+        <h1 class="login-title">Welcome back</h1>
+        <p class="login-subtitle">Sign in to your account to continue</p>
+
+        <div class="login-error" id="login-error"></div>
+
+        <form id="loginForm">
+            <div class="login-field">
+                <label>Email</label>
+                <input type="email" id="email" placeholder="you@example.com" required>
+            </div>
+            <div class="login-field">
+                <label>Password</label>
+                <input type="password" id="password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="login-submit">Sign In</button>
+        </form>
+
+        <div class="login-divider">
+            <span></span><p>don't have an account?</p><span></span>
+        </div>
+
+        <div class="login-signup-row">
+            <a href="signup.html">Create an account →</a>
+        </div>
+    </div>
+
+    <script type="module" src="js/login.js"></script>
+</body>
+</html>
